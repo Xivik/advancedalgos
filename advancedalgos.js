@@ -138,3 +138,30 @@ return romanStr;
 }
 
 convertToRoman(36);
+
+// Caesars Cipher
+
+function rot13(str) {
+  // split string into array so we can manipulate the data
+  return str.split('')
+  .map
+  // map over the array, we need to use .call to use the string method charCodeAt
+  .call(str, char => {
+      // get value of character in the current spot
+     const charCode = char.charCodeAt(0);
+     // if the character is non alphanumeric, just pass them on.
+      if (charCode < 65 || charCode > 90) {
+        return String.fromCharCode(charCode);  
+      }
+     // if the value is less then 78(N) add 13
+      else if (charCode < 78) {
+        return String.fromCharCode(charCode + 13);
+      }
+      // if the value is over 78(N) subtract 13
+      return String.fromCharCode(charCode - 13);
+    })
+    // turn array back into a string
+    .join(''); 
+}
+// Change the inputs below to test
+rot13("SERR PBQR PNZC");

@@ -94,6 +94,47 @@ const strRev = str.split("").reverse().join("");
   }
 }
 
-
-
 palindrome("eye");
+
+// Roman Numerals
+
+const romanArr = [
+  [1000, 'M'],
+  [900, 'CM'],
+  [500, 'D'],
+  [400, 'CD'],
+  [100, 'C'],
+  [90, 'XC'],
+  [50, 'L'],
+  [40, 'XL'],
+  [10, 'X'],
+  [9, 'IX'],
+  [5, 'V'],
+  [4, 'IV'],
+  [1, 'I']
+];
+
+function convertToRoman(num) {
+// create empty array to push romans on.
+ const romans = [];
+ let calcNum = num;
+ // loop through array 
+ for (let i = 0; i<romanArr.length; i++) {
+   // if num divided by highest number in array is more then 0.
+   if (calcNum / romanArr[i][0] > 0) {
+     // calculate the amount of romans need to be added by rounding.
+     let divTime = Math.floor(calcNum / romanArr[i][0]);
+     while(divTime >= 1) {
+     romans.push(romanArr[i][1]);
+     divTime--;
+     }
+      // calculate the rest for the next iteration
+     calcNum = calcNum % romanArr[i][0];
+   }
+ }
+ // convert array back to string
+ const romanStr = romans.join("");
+return romanStr;
+}
+
+convertToRoman(36);

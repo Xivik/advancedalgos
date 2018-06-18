@@ -79,3 +79,21 @@ function updateRecords(id, prop, value) {
 // Alter values below to test your code
 updateRecords(1245, "tracks", "Addicted to Love");
 
+// Palindrome Checker
+
+function palindrome(str) {
+  // convert string to lowercase, remove all non alphanumeric chars
+  str = str.toLowerCase().replace(/[^0-9a-z]/gi, '');
+// create a copy for comparison and reverse it.
+const strRev = str.split("").reverse().join("");
+  console.log(str, strRev);
+  if (str === strRev) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
+palindrome("eye");

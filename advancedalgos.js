@@ -165,3 +165,82 @@ function rot13(str) {
 }
 // Change the inputs below to test
 rot13("SERR PBQR PNZC");
+
+// cash register
+
+ const REGOBJ = { 
+  'ONE HUNDRED': 10000,
+  'TWENTY': 2000,
+  'TEN': 1000,
+  'FIVE': 500,
+  'ONE': 100,
+  'QUARTER': 25,
+  'DIME': 10,
+  'NICKEL': 5,
+  'PENNY': 1
+  };
+
+function checkCashRegister(price, cash, cid) {
+  let change = cash - price;
+ 
+  const cidCopy = cid.map(arr => arr.slice());
+  
+  // calculate total cash in drawer
+  let cidTotal = 0;
+  
+  for (let i = 0; i<cid.length; i++) {
+    cidTotal += cid[i][1];
+  }
+
+   // make sure to only round at 2 decimals
+   cidTotal = Math.round(cidTotal * 100) / 100;
+  // if total cash in drawer is less then change, return.
+  if (change > cidTotal) {
+    return {status: "INSUFFICIENT_FUNDS", change: []}
+  }
+  cidTotal *= 100;
+  // create arr to push change on
+  let changeArr = [];
+  // loop over cid backwards, so we start with the highest amount. 
+  change = change * 100;
+
+  for(let j = cid.length - 1; j >= 0; j--){
+    // reduce change with current money in cid 
+    cid[j][1] *= 100;
+    let nameOfValue = cid[j][0];
+    let valueAmount = 0;
+        while (change > 0 && cid[j][1] > 0) {
+          if ( change < 0 || cid[j][1] < 0) {
+            break;
+          } else if ((change - REGOBJ[nameOfValue]) < 0) {
+            break;
+          }
+          
+          change -= REGOBJ[nameOfValue];
+          cid[j][1] -= REGOBJ[nameOfValue];
+          valueAmount += REGOBJ[nameOfValue];
+           
+    } // end of while loop
+    if (valueAmount > 0) {
+      valueAmount /= 100;
+      let arr = [nameOfValue, valueAmount];
+    changeArr.push(arr);
+    }
+
+  } // end of for loop
+let isEmpty = 0;
+  for (let i = 0; i<cid.length; i++) {
+    isEmpty += cid[i][1];
+  }
+  // if change is still over 0 after the loop we dont have exact change
+  if (change > 0) {
+    return {status: "INSUFFICIENT_FUNDS", change: []};
+    // if total equals 0, we have exact change 
+  } else if (isEmpty === 0) {
+    return  {status: "CLOSED", change: [...cidCopy]}
+  } else {
+  return{status: "OPEN", change: [...changeArr]};
+  }
+}
+
+checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]);
